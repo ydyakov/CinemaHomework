@@ -19,6 +19,7 @@
 <body>
     <script type="module">
         import * as THREE from 'three';
+        import { PlaneGeometry } from 'three';
 
         // Setup renderer
         const renderer = new THREE.WebGLRenderer();
@@ -59,11 +60,16 @@
             color: 0x0000FF
         }
 
+        const placatSize = {
+            width: 1,
+            heigth: 1,
+            offset: 1
+        }
 
         // геометрия за основната сграда
-        const centerBoxGeometry = new THREE.BoxGeometry(centerBox.width, centerBox.heigth, centerBox.heigth);
+        const centerBoxGeometry = new THREE.BoxGeometry(centerBox.width, centerBox.heigth, centerBox.lenght);
         const rigthBoxGeometry = new THREE.BoxGeometry(rigthBox.width, rigthBox.heigth, rigthBox.lenght);
-        const leftBoxGeometry = new THREE.BoxGeometry(leftBox.width, leftBox.heigth, leftBox.heigth);
+        const leftBoxGeometry = new THREE.BoxGeometry(leftBox.width, leftBox.heigth, leftBox.lenght);
 
 
 
@@ -85,15 +91,80 @@
 
 
 
-        // геоометир з земята
-        const groundGeometry = new THREE.PlaneGeometry(20, 30);
-        const groundMaterial = new THREE.MeshToonMaterial({ color: 0x565656 });
+        // геоометир за земята
+        const groundGeometry = new THREE.PlaneGeometry(50, 50);
+        const groundMaterial = new THREE.MeshToonMaterial({ color: 0xA1A1A1 });
         const ground = new THREE.Mesh(groundGeometry, groundMaterial);
         ground.rotation.x = -Math.PI / 2;
         ground.position.y = 0;
         scene.add(ground);
 
+        // плакати
+        const palacatGeometry = new THREE.PlaneGeometry(placatSize.width, placatSize.heigth);
+        const palacatMaterial = new THREE.MeshStandardMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide });
+        const placat1 = new THREE.Mesh(palacatGeometry, palacatMaterial);
+        const placat2 = new THREE.Mesh(palacatGeometry, palacatMaterial);
 
+        placat2.position.y = placat1.position.y = placatSize.heigth / 2 + placatSize.offset;
+        placat1.position.x = -(centerBox.width / 2 + leftBox.width) / 2 - 0.8;
+        placat2.position.x = -(centerBox.width / 2 + leftBox.width) / 2 + 0.8;
+        placat2.position.z = placat1.position.z = leftBox.lenght / 2 + 0.1;
+        scene.add(placat1);
+        scene.add(placat2);
+
+        // надписи
+    const baner1Geometry = new THREE.PlaneGeometry(2, 2);
+    const loader = new THREE.TextureLoader();
+    debugger;
+    const texture = await loader.load('https://www.checkbot.io/images/logos/google-color.svg');
+    //const texture = await loadTextureAsync('https://www.checkbot.io/images/logos/google-color.svg');
+
+    loader.load('./image/xd.png', function (texture) {
+
+        // Създаваме материал с текстурата
+        const material = new THREE.MeshBasicMaterial({ map: texture });
+
+        // Създаваме PlaneGeometry
+        const planeGeometry = new THREE.PlaneGeometry(5, 3);
+        
+        // Създаваме мрежа (Mesh) за равнината с текстурата
+        const planeMesh = new THREE.Mesh(planeGeometry, material);
+        debugger;
+        // Задаваме позиция на равнината
+        planeMesh.position.set(0, 2, 0);
+
+        // Добавяме равнината към сцената
+        scene.add(planeMesh);
+
+        // Стартираме анимацията и рендирането САМО след зареждането на текстурата
+        animate();
+    });
+
+
+
+    const baner1Material = new THREE.MeshStandardMaterial({ map: texture });
+    const baner1 = new THREE.Mesh(baner1Geometry, baner1Material);
+    baner1.position.y = 3;
+    baner1.position.x = -(centerBox.width / 2 + leftBox.width) / 2 - 0.8;
+    baner1.position.z = leftBox.lenght / 2 + 0.1;
+
+
+
+    async function loadTextureAsync(url) {
+        const loader = new THREE.TextureLoader();
+
+        // Обещанието (Promise) се разрешава, когато текстурата е заредена
+        return new Promise((resolve, reject) => {
+            loader.load(
+                url,
+                (texture) => resolve(texture),
+                undefined,
+                (err) => reject(err)
+            );
+        });
+    }
+
+    scene.add(baner1);
 
         // Rendering loop
         function animate() {
@@ -101,7 +172,35 @@
             renderer.render(scene, camera);
         }
 
+
         animate();
+
+
+        window.addEventListener('resize', onWindowResize);
+
+        function onWindowResize() {
+            // Актуализиране на размера на рендера
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            // Актуализиране на съотношението на камерата
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            // Рендиране на сцената след resize
+            animate();
+        }
+
+        window.addEventListener('mousemove', onMouseMove);
+        function onMouseMove(event) {
+            const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            camera.position.x = mouseX * 10;
+            camera.position.y = mouseY * 10;
+
+            animate();
+        }
+
     </script>
 </body>
 </html>
