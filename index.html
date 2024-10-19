@@ -116,11 +116,11 @@
     const baner1Geometry = new THREE.PlaneGeometry(2, 2);
     const loader = new THREE.TextureLoader();
     debugger;
-    const texture = await loader.load('https://www.checkbot.io/images/logos/google-color.svg');
+    const texture = await loader.load('./image/xd.png');
     //const texture = await loadTextureAsync('https://www.checkbot.io/images/logos/google-color.svg');
 
     loader.load('./image/xd.png', function (texture) {
-
+        debugger;
         // Създаваме материал с текстурата
         const material = new THREE.MeshBasicMaterial({ map: texture });
 
