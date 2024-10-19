@@ -119,26 +119,26 @@
     const texture = await loader.load('./image/xd.png');
     //const texture = await loadTextureAsync('https://www.checkbot.io/images/logos/google-color.svg');
 
-    loader.load('./image/xd.png', function (texture) {
-        debugger;
-        // Създаваме материал с текстурата
-        const material = new THREE.MeshBasicMaterial({ map: texture });
+    //loader.load('./image/xd.png', function (texture) {
+    //    debugger;
+    //    // Създаваме материал с текстурата
+    //    const material = new THREE.MeshBasicMaterial({ map: loader.load('https://ydyakov.github.io/CinemaHomework/image/xd.png') });
 
-        // Създаваме PlaneGeometry
-        const planeGeometry = new THREE.PlaneGeometry(5, 3);
+    //    // Създаваме PlaneGeometry
+    //    const planeGeometry = new THREE.PlaneGeometry(5, 3);
         
-        // Създаваме мрежа (Mesh) за равнината с текстурата
-        const planeMesh = new THREE.Mesh(planeGeometry, material);
-        debugger;
-        // Задаваме позиция на равнината
-        planeMesh.position.set(0, 2, 0);
+    //    // Създаваме мрежа (Mesh) за равнината с текстурата
+    //    const planeMesh = new THREE.Mesh(planeGeometry, material);
+    //    debugger;
+    //    // Задаваме позиция на равнината
+    //    planeMesh.position.set(0, 2, 0);
 
-        // Добавяме равнината към сцената
-        scene.add(planeMesh);
+    //    // Добавяме равнината към сцената
+    //    scene.add(planeMesh);
 
-        // Стартираме анимацията и рендирането САМО след зареждането на текстурата
-        animate();
-    });
+    //    // Стартираме анимацията и рендирането САМО след зареждането на текстурата
+    //    animate();
+    //});
 
 
 
