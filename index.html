@@ -21,23 +21,26 @@
         import * as THREE from 'three';
         import { PlaneGeometry } from 'three';
 
-        // Setup renderer
+        // Рендър
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(3);
         document.body.appendChild(renderer.domElement);
 
-        // Create scene
+        // Сцена
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x87CEEB);
 
-        // Setup camera
+        // Камера
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.set(0, 2, 15);
 
-        // Add ambient light
+        // Аmbient всетлина
         const ambientLight = new THREE.AmbientLight(0xFFFFFF);
-        scene.add(ambientLight);
+    scene.add(ambientLight);
+
+        // обакт за зареждане на текстури
+    const loader = new THREE.TextureLoader();
 
         // конфигурация
         const centerBox = {
@@ -113,58 +116,22 @@
         scene.add(placat2);
 
         // надписи
-    const baner1Geometry = new THREE.PlaneGeometry(2, 2);
-    const loader = new THREE.TextureLoader();
-    debugger;
-    const texture = await loader.load('./image/xd.png');
-    //const texture = await loadTextureAsync('https://www.checkbot.io/images/logos/google-color.svg');
-
-    //loader.load('./image/xd.png', function (texture) {
-    //    debugger;
-    //    // Създаваме материал с текстурата
-    //    const material = new THREE.MeshBasicMaterial({ map: loader.load('https://ydyakov.github.io/CinemaHomework/image/xd.png') });
-
-    //    // Създаваме PlaneGeometry
-    //    const planeGeometry = new THREE.PlaneGeometry(5, 3);
-        
-    //    // Създаваме мрежа (Mesh) за равнината с текстурата
-    //    const planeMesh = new THREE.Mesh(planeGeometry, material);
-    //    debugger;
-    //    // Задаваме позиция на равнината
-    //    planeMesh.position.set(0, 2, 0);
-
-    //    // Добавяме равнината към сцената
-    //    scene.add(planeMesh);
-
-    //    // Стартираме анимацията и рендирането САМО след зареждането на текстурата
-    //    animate();
-    //});
-
-
-
-    const baner1Material = new THREE.MeshStandardMaterial({ map: texture });
+    const baner1Geometry = new THREE.PlaneGeometry(1, 1);
+    const baner1Material = new THREE.MeshStandardMaterial({ map: loader.load('https://ydyakov.github.io/CinemaHomework/image/xd.png') });
     const baner1 = new THREE.Mesh(baner1Geometry, baner1Material);
     baner1.position.y = 3;
     baner1.position.x = -(centerBox.width / 2 + leftBox.width) / 2 - 0.8;
     baner1.position.z = leftBox.lenght / 2 + 0.1;
 
-
-
-    async function loadTextureAsync(url) {
-        const loader = new THREE.TextureLoader();
-
-        // Обещанието (Promise) се разрешава, когато текстурата е заредена
-        return new Promise((resolve, reject) => {
-            loader.load(
-                url,
-                (texture) => resolve(texture),
-                undefined,
-                (err) => reject(err)
-            );
-        });
-    }
+    const baner2Geometry = new THREE.PlaneGeometry(4, 1);
+    const baner2Material = new THREE.MeshStandardMaterial({ map: loader.load('https://ydyakov.github.io/CinemaHomework/cinemark.png') });
+    const baner2 = new THREE.Mesh(baner2Geometry, baner2Material);
+    baner2.position.y = 3;
+    baner2.position.x = 0;
+    baner2.position.z = centerBox.lenght / 2 + 0.1;
 
     scene.add(baner1);
+    scene.add(baner2);
 
         // Rendering loop
         function animate() {
@@ -179,14 +146,12 @@
         window.addEventListener('resize', onWindowResize);
 
         function onWindowResize() {
-            // Актуализиране на размера на рендера
+            
             renderer.setSize(window.innerWidth, window.innerHeight);
 
-            // Актуализиране на съотношението на камерата
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
 
-            // Рендиране на сцената след resize
             animate();
         }
 
