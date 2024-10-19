@@ -104,7 +104,7 @@
 
         // плакати
         const palacatGeometry = new THREE.PlaneGeometry(placatSize.width, placatSize.heigth);
-        const palacatMaterial = new THREE.MeshStandardMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide });
+        const palacatMaterial = new THREE.MeshStandardMaterial({ map: loader.load('https://ydyakov.github.io/CinemaHomework/image/movebaner.jpg') });
         const placat1 = new THREE.Mesh(palacatGeometry, palacatMaterial);
         const placat2 = new THREE.Mesh(palacatGeometry, palacatMaterial);
 
@@ -124,7 +124,7 @@
     baner1.position.z = leftBox.lenght / 2 + 0.1;
 
     const baner2Geometry = new THREE.PlaneGeometry(4, 1);
-    const baner2Material = new THREE.MeshStandardMaterial({ map: loader.load('https://ydyakov.github.io/CinemaHomework/cinemark.png') });
+    const baner2Material = new THREE.MeshStandardMaterial({ map: loader.load('https://ydyakov.github.io/CinemaHomework/image/cinemark.png') });
     const baner2 = new THREE.Mesh(baner2Geometry, baner2Material);
     baner2.position.y = 3;
     baner2.position.x = 0;
@@ -133,12 +133,22 @@
     scene.add(baner1);
     scene.add(baner2);
 
+    const entranceGeometry = new THREE.PlaneGeometry(4, 1);
+    const entranceMaterial = new THREE.MeshStandardMaterial({ map: loader.load('https://ydyakov.github.io/CinemaHomework/image/door.png') });
+    const entrance = new THREE.Mesh(entranceGeometry, entranceMaterial);
+    entrance.position.y = entranceGeometry.heigth / 2;
+    entrance.position.x = 0;
+    entrance.position.z = centerBox.lenght / 2 + 0.1;
+
+    scene.add(entrance);
+
+
         // Rendering loop
         function animate() {
             requestAnimationFrame(animate);
             renderer.render(scene, camera);
-        }
-
+    }
+    scene.add(entrance);
 
         animate();
 
