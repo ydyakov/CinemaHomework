@@ -19,28 +19,6 @@
 <body>
     <script type="module">
         import * as THREE from 'three';
-        import { PlaneGeometry } from 'three';
-
-        // Рендър
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(3);
-        document.body.appendChild(renderer.domElement);
-
-        // Сцена
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x87CEEB);
-
-        // Камера
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 2, 15);
-
-        // Аmbient всетлина
-        const ambientLight = new THREE.AmbientLight(0xFFFFFF);
-        scene.add(ambientLight);
-
-        // обакт за зареждане на текстури
-        const loader = new THREE.TextureLoader();
 
         // конфигурация
         const centerBox = {
@@ -66,15 +44,39 @@
         const placatSize = {
             width: 1,
             heigth: 1,
-            offset: 1
+            offset: 0.7
+        }
+        const textureUrl =
+        {
+            poster: "https://ydyakov.github.io/CinemaHomework/image/movebaner.jpg",
+            textLeft: "https://ydyakov.github.io/CinemaHomework/image/xd.png",
+            textRight: "https://ydyakov.github.io/CinemaHomework/image/cinemark.png",
+            door: "https://ydyakov.github.io/CinemaHomework/image/door.jpg"
         }
 
-        // геометрия за основната сграда
+
+        // Рендър
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(3);
+        document.body.appendChild(renderer.domElement);
+        // Сцена
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x87CEEB);
+        // Камера
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(-5, 2, 6);
+        camera.rotation.y = - Math.PI / 4;
+        // Аmbient сwетлина
+        const ambientLight = new THREE.AmbientLight(0xFFFFFF);
+        scene.add(ambientLight);
+        // обакт за зареждане на текстури
+        const loader = new THREE.TextureLoader();
+
+        // геометрии за основната сграда
         const centerBoxGeometry = new THREE.BoxGeometry(centerBox.width, centerBox.heigth, centerBox.lenght);
         const rigthBoxGeometry = new THREE.BoxGeometry(rigthBox.width, rigthBox.heigth, rigthBox.lenght);
         const leftBoxGeometry = new THREE.BoxGeometry(leftBox.width, leftBox.heigth, leftBox.lenght);
-
-
 
         const centerMaterial = new THREE.MeshStandardMaterial({ color: centerBox.color });
         const leftMaterial = new THREE.MeshStandardMaterial({ color: leftBox.color });
@@ -86,13 +88,11 @@
 
         center.position.set(0, centerBox.heigth / 2, 0);
         left.position.set(-((centerBox.width + leftBox.width) / 2), centerBox.heigth / 2, 0);
-        rigth.position.set((centerBox.width + rigthBox.width) / 2, rigthBox.heigth / 2, 3);
+        rigth.position.set((centerBox.width + rigthBox.width) / 2, rigthBox.heigth / 2, 1);
 
         scene.add(center);
         scene.add(left);
         scene.add(rigth);
-
-
 
         // геоометрия за земята
         const groundGeometry = new THREE.PlaneGeometry(50, 50);
@@ -104,29 +104,29 @@
 
         // плакати
         const palacatGeometry = new THREE.PlaneGeometry(placatSize.width, placatSize.heigth);
-        const palacatMaterial = new THREE.MeshStandardMaterial({ map: loader.load('https://ydyakov.github.io/CinemaHomework/image/movebaner.jpg') });
+        const palacatMaterial = new THREE.MeshStandardMaterial({ map: loader.load(textureUrl.poster) });
         const placat1 = new THREE.Mesh(palacatGeometry, palacatMaterial);
         const placat2 = new THREE.Mesh(palacatGeometry, palacatMaterial);
 
         placat2.position.y = placat1.position.y = placatSize.heigth / 2 + placatSize.offset;
-        placat1.position.x = -(centerBox.width / 2 + leftBox.width) / 2 - 0.8;
-        placat2.position.x = -(centerBox.width / 2 + leftBox.width) / 2 + 0.8;
+        placat1.position.x = -(centerBox.width / 2 + leftBox.width) / 2 - 0.7;
+        placat2.position.x = -(centerBox.width / 2 + leftBox.width) / 2 + 0.7;
         placat2.position.z = placat1.position.z = leftBox.lenght / 2 + 0.1;
         scene.add(placat1);
         scene.add(placat2);
 
         // надписи
         const baner1Geometry = new THREE.PlaneGeometry(1, 1);
-        const baner1Material = new THREE.MeshStandardMaterial({ map: loader.load('https://ydyakov.github.io/CinemaHomework/image/xd.png') });
+        const baner1Material = new THREE.MeshStandardMaterial({ map: loader.load(textureUrl.textLeft) });
         const baner1 = new THREE.Mesh(baner1Geometry, baner1Material);
-        baner1.position.y = 3;
-        baner1.position.x = -(centerBox.width / 2 + leftBox.width) / 2 - 0.8;
+        baner1.position.y = 3.4;
+        baner1.position.x = -(centerBox.width / 2 + 0.6);
         baner1.position.z = leftBox.lenght / 2 + 0.1;
 
         const baner2Geometry = new THREE.PlaneGeometry(4, 1);
-        const baner2Material = new THREE.MeshStandardMaterial({ map: loader.load('https://ydyakov.github.io/CinemaHomework/image/cinemark.png') });
+        const baner2Material = new THREE.MeshStandardMaterial({ map: loader.load(textureUrl.textRight) });
         const baner2 = new THREE.Mesh(baner2Geometry, baner2Material);
-        baner2.position.y = 3;
+        baner2.position.y = 2;
         baner2.position.x = 0;
         baner2.position.z = centerBox.lenght / 2 + 0.1;
 
@@ -134,33 +134,28 @@
         scene.add(baner2);
 
         const entranceGeometry = new THREE.PlaneGeometry(4, 1);
-        const entranceMaterial = new THREE.MeshStandardMaterial({ map: loader.load('https://ydyakov.github.io/CinemaHomework/image/door.jpg') });
+        const entranceMaterial = new THREE.MeshStandardMaterial({ map: loader.load(textureUrl.door) });
         const entrance = new THREE.Mesh(entranceGeometry, entranceMaterial);
-    entrance.position.y = entranceGeometry.parameters.height / 2;
+        entrance.position.y = entranceGeometry.parameters.height / 2;
         entrance.position.x = 0;
         entrance.position.z = centerBox.lenght / 2 + 0.1;
         scene.add(entrance);
 
-
-        // Rendering loop
+        // рендериране на сцената
         function animate() {
             requestAnimationFrame(animate);
             renderer.render(scene, camera);
         }
-        scene.add(entrance);
 
         animate();
 
 
         window.addEventListener('resize', onWindowResize);
-
         function onWindowResize() {
 
             renderer.setSize(window.innerWidth, window.innerHeight);
-
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
-
             animate();
         }
 
